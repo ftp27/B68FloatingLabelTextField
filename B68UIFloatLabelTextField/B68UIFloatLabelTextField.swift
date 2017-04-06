@@ -160,6 +160,10 @@ open class B68UIFloatLabelTextField: UITextField {
   //MARK: - Drawing & Animations
   override open func layoutSubviews() {
     super.layoutSubviews()
+    
+    // Before starting any animation, make sure the left edge of the floatingLabel is aligned with the left edge of the editingRect
+    floatingLabel.frame.origin.x = editingRect(forBounds: bounds).minX
+    
     if (isFirstResponder && !hasText) {
       hideFloatingLabel()
     } else if(hasText) {
@@ -170,7 +174,8 @@ open class B68UIFloatLabelTextField: UITextField {
   func showFloatingLabelWithAnimation(_ isAnimated : Bool)
   {
     let fl_frame = CGRect(
-      x: horizontalPadding,
+      // Have the new frame after animation be the left edge of the editingRect
+      x:  editingRect(forBounds: bounds).minX,
       y: 0,
       width: self.floatingLabel.frame.width,
       height: self.floatingLabel.frame.height
@@ -189,7 +194,8 @@ open class B68UIFloatLabelTextField: UITextField {
   
   func hideFloatingLabel () {
     let fl_frame = CGRect(
-      x: horizontalPadding,
+      // Have the new frame after animation be the left edge of the editingRect
+      x:  editingRect(forBounds: bounds).minX,
       y: verticalPadding,
       width: self.floatingLabel.frame.width,
       height: self.floatingLabel.frame.height
